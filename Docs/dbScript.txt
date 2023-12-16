@@ -1,0 +1,109 @@
+drop database if exists medicative;
+create database medicative;
+use medicative;
+
+drop table if exists ADMIN;
+
+drop table if exists BLOG;
+
+drop table if exists COMMENT;
+
+drop table if exists USER;
+
+drop table if exists CATEGORY;
+
+/*==============================================================*/
+/* Table : CATEGORY                                                */
+/*==============================================================*/
+create table CATEGORY
+(
+   CATEGORY_ID             int not null auto_increment,
+   CATEGORY_NAME           varchar(20),
+   
+   primary key (CATEGORY_ID)
+);
+
+/*==============================================================*/
+/* Table : ADMIN                                                */
+/*==============================================================*/
+create table ADMIN
+(
+   ADMIN_ID             int not null auto_increment,
+   USER_NAME           varchar(20),
+   PASSWORD             varchar(30),
+   FIRST_NAME            varchar(30),
+   LAST_NAME            varchar(20),
+   PICTURE              text,
+   primary key (ADMIN_ID)
+);
+
+/*==============================================================*/
+/* Table : BLOG                                                 */
+/*==============================================================*/
+create table BLOG
+(
+   BLOG_ID              int not null auto_increment,
+   TITLE                varchar(300),
+   CATEGORY_ID          INT,
+   PHOTO                text,
+   VIDEO                text,
+   PRODUCT_LINK         text,
+   CONTENT              text,
+   BLOG_SHORT           text,
+   CREATED_DATE          date,
+   primary key (BLOG_ID)
+);
+
+/*==============================================================*/
+/* Table : COMMENT                                              */
+/*==============================================================*/
+create table COMMENT
+(
+   COMMENT_ID           int not null auto_increment,
+   USER_ID              int not null,
+   BLOG_ID              int not null,
+   CONTENT              text,
+   primary key (COMMENT_ID)
+);
+
+/*==============================================================*/
+/* Table : USER                                                 */
+/*==============================================================*/
+create table USER
+(
+   USER_ID              int not null auto_increment,
+   FIRST_NAME           varchar(20),
+   LAST_NAME            varchar(20),
+   EMAIL                varchar(60),
+   PASSWORD             varchar(30),
+   PHONE_NUMBER         varchar(30),
+   primary key (USER_ID)
+);
+/*==============================================================*/
+/* Table : COLLECTION_PHOTOS                                    */
+/*==============================================================*/
+CREATE TABLE COLLECTION_PHOTOS
+(
+   PHOTO_ID INT AUTO_INCREMENT PRIMARY KEY,
+   BLOG_ID INT ,
+   PHOTO_PATH TEXT NOT NULL
+);
+
+
+alter table COMMENT add constraint FK_COMMENTING foreign key (USER_ID)
+      references USER (USER_ID) on delete restrict on update restrict;
+
+alter table COMMENT add constraint FK_CONTAINE foreign key (BLOG_ID)
+      references BLOG (BLOG_ID) on delete restrict on update restrict;
+
+
+alter table BLOG add constraint FK_BLOG_CATEGORY foreign key (CATEGORY_ID)
+      references CATEGORY (CATEGORY_ID) on delete restrict on update restrict;
+
+
+INSERT INTO `category`( `CATEGORY_NAME`) VALUES("Body care") ,("Makeup") ,("Hair care") ,("Nail care") ,("Fragrance") ,("accessories") ,("tools") ,("devices");
+ALTER TABLE COLLECTION_PHOTOS ADD CONSTRAINT FK_COLLECTION_PHOTO_BLOG FOREIGN KEY(BLOG_ID) REFERENCES BLOG(BLOG_ID);
+
+
+
+
